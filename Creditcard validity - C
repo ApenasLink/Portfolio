@@ -1,0 +1,78 @@
+
+#include <cs50.h>
+#include <stdio.h>
+int main(void)
+{
+long card = get_long("Input your card number (not a scam): ");
+int digits=0, count=0;
+long card_i = card;
+long card_2 = card;
+int chk = 0;
+int som1=0, som2=0;
+int fin1=0, fin2=0;
+while(card != 0)
+{
+    if(chk == 1)//this if - else is to alternate between charcaters of the credit card
+    {
+    card_2 = card_2 % 10;
+    digits++;
+    chk--;
+    fin1 = card_2 * 2;
+    if(fin1 >= 10) //in case the *2 multiplication is bigger than 10 this if subrtracts the value and again separates the 2 case number into individial numbers
+        {
+            count = count - fin1;
+            count = count + (fin1 % 10);
+            count = count + (fin1 / 10);
+        }
+    count = count + fin1;
+    }
+    else
+    {
+    digits++;
+    card_2 = card_2 % 10;
+    chk++;
+    fin2 = som2 + card_2;
+    count = count + fin2;
+    }
+card = card / 10;
+card_2 = card;
+}
+
+count = count % 10; //checks the sum of the card if its last number is 0
+if(count != 0)
+{
+    printf("INVALID\n");
+    return 0;
+}
+if (digits == 16)
+{
+    while(count != 14)
+    {
+        card_i = card_i / 10;
+        count++;
+    }
+    if(card_i == 51 || card_i == 52 || card_i == 53 || card_i == 54 || card_i == 55)
+    {
+        printf("MASTERCARD\n");
+    }
+    else
+    {
+        printf("VISA\n");
+        return(0);
+    }
+}
+else if (digits == 15)
+{
+
+     printf("AMEX\n");
+
+}
+else if (digits == 13)
+{
+    printf("VISA\n");
+}
+else
+{
+    printf("INVALID\n");
+}
+}
