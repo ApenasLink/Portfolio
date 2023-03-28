@@ -1,0 +1,87 @@
+#include <cs50.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+void sorter(int sort[], int size, int *sorted);
+
+int main(void)
+{
+int tosort[] = {11,15,2,0,50,60,100};
+int size = sizeof(tosort)/sizeof(tosort[0]);
+int sorted[size];
+sorter(tosort, size, sorted);
+for(int b = 0; b != size; b++)
+{
+printf("%i ",sorted[b]);
+}
+printf("\n");
+}
+
+void sorter(int sort[], int size, int *sorted)
+{
+   bool flaged[size];
+   int ext=0;
+   for(int  i = (size-1); i != -1; i--)
+   {
+      for(int a = 0; a != size; a++)
+      {
+         if(sorted[i] < sort[a] && flaged[a] != true)
+         {
+         sorted[i] = sort[a];
+         ext = a;
+         }
+      }
+   flaged[ext] = true;
+   }
+}
+
+
+////////////////////////
+
+
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+
+int main(void)
+{
+   int sort[] = {45,-10,0,50,1000,-1,-1000};
+   int size = (sizeof(sort)/sizeof(sort[0]));
+   int sorted[size];
+   bool flagged[size];
+   int ext = -1;
+   for(int  i = (size-1); i != -1; i--)
+   {
+      for(int a = 0; a != size; a++)
+      {
+         if(sort[a] >= sorted[i] && flagged[a] != true)
+         {
+            if(sort[a] == 0)
+            {
+                flagged[a] = true;
+             }
+         sorted[i] = sort[a];
+         ext = a;
+         }
+      }
+   flagged[ext] = true;
+   }
+   for(int a = 0; a != size; a++)
+    {
+    for(int b = 0; b != size; b++)
+     if(sorted[a] > sort[b] && flagged[b] != true)
+     {
+        sorted[a] = sort[b];
+        ext = b;
+     }
+    flagged[ext] = true;
+    }
+for(int b = 0; b != sizeof(sort)/sizeof(sort[0]); b++)
+{
+printf("%i ",sorted[b]);
+}
+printf("\n");
+}
