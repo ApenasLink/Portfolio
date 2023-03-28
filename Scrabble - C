@@ -1,0 +1,135 @@
+#include <stdio.h>
+#include <cs50.h>
+int strlng (string z);
+void emasc ( string z, int x);
+int charchk ( int count, string p);
+int main (void)
+{
+    string p1 = get_string("Player 1: ");
+    string p2 = get_string("Player 2: ");
+    int count[3];
+    int points[3];
+
+    count[1] = strlng(p1);
+    emasc (p1 , count[1]);
+    count[2] = strlng(p2);
+    emasc (p2 , count[2]);
+    points[1] = charchk(count[1], p1);
+    points[2] = charchk(count[2], p2);
+
+ if (points[1] > points[2])
+ {
+    printf("Player 1 wins!\n");
+ }
+ else if (points[1] < points[2])
+ {
+    printf("Player 2 wins!\n");
+ }
+ else
+ {
+    printf("Tie!\n");
+ }
+}
+
+int charchk ( int count, string p)
+{
+int points = 0;
+while(count != -1)
+{
+    if((int)p[count] < 64 || (int)p[count] > 90)
+    {
+        count--;
+    }
+const char letters1[10]= {"AEILNORSTU"};
+    for(int e = 9; e != -1; e--)
+    {
+        if ( (int)letters1[e] == (int) p[count] )
+        {
+        points++;
+        break;
+        }
+    }
+const char letters2[2]= {"DG"};
+    for(int e = 1; e != -1; e--)
+    {
+        if ( (int)letters2[e] == (int) p[count] )
+        {
+        points = points + 2;
+        break;
+        }
+    }
+const char letters3[4]= {"BCMP"};
+    for(int e = 3; e != -1; e--)
+    {
+        if ( (int)letters3[e] == (int) p[count] )
+        {
+        points = points + 3;
+        break;
+        }
+    }
+const char letters4[5]= {"FHVWY"};
+    for(int e = 4; e != -1; e--)
+    {
+        if ( (int)letters4[e] == (int) p[count] )
+        {
+        points = points + 4;
+        break;
+        }
+    }
+const char letters5[2] = {"K"};
+    for(int e = 0; e != -1; e--)
+    {
+        if ( (int)letters5[e] == (int) p[count] )
+        {
+        points = points + 5;
+        break;
+        }
+    }
+
+const char letters8[2]= {"JX"};
+    for(int e = 1; e != -1; e--)
+    {
+        if ( (int)letters8[e] == (int) p[count] )
+        {
+        points = points + 8;
+        break;
+        }
+    }
+const char letters10[2]= {"QZ"};
+    for(int e = 1; e != -1; e--)
+    {
+        if ( (int)letters10[e] == (int) p[count] )
+        {
+        points = points + 10;
+        break;
+        }
+    }
+count--;
+}
+return points;
+}
+
+void emasc ( string z, int x)
+{
+    while( x != -1)
+    {
+        if(z[x] >= 'a' && z[x] <= 'z')
+        {
+            z[x] = z[x] - 32;
+        }
+    x--;
+    }
+}
+
+int strlng (string z)
+{
+    int count=0;
+    int x=0;
+    while(z[x] != '\0')
+    {
+        count++;
+        x++;
+    }
+    x--;
+    return x;
+}
