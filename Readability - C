@@ -1,0 +1,66 @@
+#include <cs50.h>
+#include <stdio.h>
+#include <math.h>
+void ascot (string z, int* ret_letters, int* ret_words, int* ret_sentences);
+int main(void)
+{
+    int letters = 0, words = 0, sentences = 0;
+    string z = get_string("Text: ");
+    ascot(z, &letters, &words, &sentences);
+    float a = (float)letters/(float)words*100.0;
+    float b = (float)sentences/(float)words*100.0;
+    float index = round(0.0588 * a - 0.296 * b - 15.8);
+    if(index < 1)
+    {
+        printf("Before Grade 1\n");
+    }
+    else if (index >= 16)
+    {
+        printf("Grade 16+\n");
+    }
+    else
+    {
+        printf("Grade %i\n",(int)index);
+    }
+
+
+}
+
+void ascot (string z, int* ret_letters, int* ret_words, int* ret_sentences)
+{
+int letters = 0, words = 0, sentences = 0;
+    int count=0;
+    int x=0;
+while(z[x] != '\0')
+{
+    count++;
+    x++;
+}
+while( x != -1)
+{
+        if(z[x] >= 'a' && z[x] <= 'z')
+        {
+            letters++;
+        }
+        if(z[x] >= 'A' && z[x] <= 'Z')
+        {
+            letters++;
+        }
+        if(z[x] == ' ')
+        {
+            words++;
+        }
+        if(z[x] == '.' || z[x] == '!' || z[x] == '?')
+        {
+            sentences++;
+            if(z[x+1] == '\0')
+            {
+                words++;
+            }
+        }
+    x--;
+}
+*ret_letters = letters;
+*ret_words = words;
+*ret_sentences = sentences;
+}
