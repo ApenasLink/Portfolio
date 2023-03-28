@@ -1,0 +1,158 @@
+#include <cs50.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
+
+#define LISTSIZE 1000
+
+#define EXACT 2
+#define CLOSE 1
+#define WRONG 0
+
+#define GREEN   "\e[38;2;255;255;255;1m\e[48;2;106;170;100;1m"
+#define YELLOW  "\e[38;2;255;255;255;1m\e[48;2;201;180;88;1m"
+#define RED     "\e[38;2;255;255;255;1m\e[48;2;220;20;60;1m"
+#define RESET   "\e[0;39m"
+
+string get_guess(int wordsize);
+int check_word(string guess, int wordsize, int status[], string choice);
+void print_word(string guess, int wordsize, int status[]);
+
+int main(int argc, string argv[])
+{
+    if (argv[1] == NULL || argc == 1 || argc >= 3)
+    {
+        return 1;
+    }
+
+    int wordsize = 0;
+    if(argv[1][0] == 53)
+    {
+        wordsize = 5;
+    }
+    else if(argv[1][0] == 54)
+    {
+        wordsize = 6;
+    }
+    else if(argv[1][0] == 55)
+    {
+        wordsize = 7;
+    }
+    else if(argv[1][0] == 56)
+    {
+        wordsize = 8;
+    }
+    else
+    {
+        printf("%c\n",argv[1][0]);
+        printf("Error: wordsize must be either 5, 6, 7, or 8\n");
+        return 1;
+    }
+    char wl_filename[6];
+    sprintf(wl_filename, "%i.txt", wordsize);
+    FILE *wordlist = fopen(wl_filename, "r");
+    if (wordlist == NULL)
+    {
+        printf("Error opening file %s.\n", wl_filename);
+        return 1;
+    }
+
+    char options[LISTSIZE][wordsize + 1];
+
+    for (int i = 0; i < LISTSIZE; i++)
+    {
+        fscanf(wordlist, "%s", options[i]);
+    }
+
+    srand(time(NULL));
+    string choice = options[rand() % LISTSIZE];
+
+    int guesses = wordsize + 1;
+    bool won = false;
+    printf(GREEN"This is WORDLE"RESET"\n");
+    printf("You have %i tries to guess the %i-letter word I'm thinking of\n", guesses, wordsize);
+    int score = 0;
+    for (int i = 0; i < guesses; i++)
+    {
+        string guess = get_guess(wordsize);
+        int status[wordsize];
+        for(int y = 0; y != wordsize; y++)
+        {
+            status[y] = 0;
+        }
+
+        // Calculate score for the guess
+        printf("Guess %i: ", i + 1);
+        score = check_word(guess, wordsize, status, choice);
+        printf("\n");
+        if (score == 2 * wordsize)
+        {
+            won = true;
+            printf("You won!\n");
+            return 0;
+        }
+    }
+            printf("The word was %s\n",choice);
+            printf("%i\n",score);
+}
+
+string get_guess(int wordsize)
+{
+    string guess;
+
+    do
+    {
+        guess = get_string("Input a %i-letter word: ",wordsize);
+    }
+    while(strlen(guess) != wordsize);
+    for( int x = strlen(guess); x != -1; x--)
+    {
+        if(guess[x] >= 'A' && guess[x] <= 'Z')
+        {
+            guess[x] = guess[x] + 32;
+        }
+    }
+
+    return guess;
+}
+
+int check_word(string guess, int wordsize, int status[], string choice)
+{
+    int score = 0;
+    for(int x = 0; x != wordsize; x++)
+    {
+        int flag = 0;
+        if(guess[x] == choice[x])
+        {
+            printf(GREEN"%c"RESET,guess[x]);
+            flag++;
+            score = score + 2;
+        }
+        if(flag == 0)
+        {
+            for(int e = 0; e != wordsize; e++)
+            {
+                if(guess[x] == choice[e])
+                {
+                    printf(YELLOW"%c"RESET,guess[x]);
+                    e = wordsize;
+                    flag++;
+                    score = score + 1;
+                   break;
+                 }
+        }
+        }
+        if(flag == 0)
+        {
+            printf(RED"%c"RESET,guess[x]);
+        }
+    }
+    return score;
+}
+
+void print_word(string guess, int wordsize, int status[])
+{
+    printf("\n");
+    return;
+}
